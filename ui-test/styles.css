@@ -1,0 +1,38 @@
+html {
+  --s: 100px;
+  --m: 4px;
+}
+
+.hex {
+  width: var(--s);
+  margin: var(--m);
+  height: calc(var(--s) * 1.1547);
+  background: green;
+  display: inline-block;
+  font-size: initial; /* we reset the font-size if we want to add some content */
+  clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+}
+
+.hex .text {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hex-row:not(:first-child) {
+  margin-top: -30px;
+}
+
+#board {
+  width: calc(var(--s) * 6 * 1.1547);
+  height: calc(var(--s) * 6);
+  background: grey;
+  font-size: initial; /* we reset the font-size if we want to add some content */
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
