@@ -7,7 +7,7 @@
   --m: 1px;
   width: calc(var(--s) * 6 * 1.1547);
   height: calc(var(--s) * 6);
-  background: grey;
+  background: #a9a9a9;
   font-size: initial;
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   display: flex;
@@ -21,7 +21,7 @@
   width: var(--s);
   margin: var(--m);
   height: calc(var(--s) * 1.1547);
-  background: green;
+  background: #67f667;
   display: inline-block;
   font-size: initial;
   clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
@@ -34,4 +34,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.vertex {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: red;
+  z-index: 5;
+  border-radius: 10px;
 }

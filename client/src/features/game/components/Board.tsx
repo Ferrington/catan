@@ -1,20 +1,21 @@
 import "../game.css";
-import HexCoordinate from "../HexCoordinate.ts";
-import TileRow from "./TileRow.tsx";
+import {useSnapshot} from "valtio";
+import {store} from "../../store/store.ts";
+import Tile from "./Tile.tsx";
+import {BoardState, Tile as TileType, Vertex as VertexType} from "../../types/types.ts";
+import Vertex from "./Vertex.tsx";
 
-const rows = [
-  {size: 3, start: new HexCoordinate(2, 0, -2)},
-  {size: 4, start: new HexCoordinate(2, -1, -1)},
-  {size: 5, start: new HexCoordinate(2, -2, 0)},
-  {size: 4, start: new HexCoordinate(1, -2, 1)},
-  {size: 3, start: new HexCoordinate(0, -2, 2)},
-];
 
 export default function Board() {
+  const {tiles, vertices} = useSnapshot<BoardState>(store);
+
   return (
     <div id="container">
       <div id="board">
-        {rows.map(({size, start}) => <TileRow key={start.toString()} size={size} start={start}/>)}
+        {Object.entries(tiles)
+          .map(([key, value]) => <Tile key={key} tile={value as TileType}/>)}
+        {Object.entries(vertices)
+          .map(([key, value]) => <Vertex key={key} vertex={value as VertexType}/>)}
       </div>
 
     </div>
