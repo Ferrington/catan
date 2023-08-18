@@ -5,7 +5,10 @@ export type BoardState = {
     [index: string]: Tile;
   },
   vertices: {
-    [index: string]: Vertex
+    [index: string]: Vertex;
+  },
+  edges: {
+    [index: string]: Edge;
   },
 };
 
@@ -19,4 +22,11 @@ export type Vertex = {
   coords: HexCoordinate;
   left: number;
   top: number;
+}
+
+export type Edge = {
+  coords: HexCoordinate;
+  left: number;
+  top: number;
+  rotation: number;
 }

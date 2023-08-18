@@ -44,3 +44,13 @@
   z-index: 5;
   border-radius: 10px;
 }
+
+.edge {
+  position: absolute;
+  width: 10px;
+  height: 40px;
+  background: blue;
+  z-index: 5;
+
+  transform-origin: top;
+}
