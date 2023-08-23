@@ -61,7 +61,7 @@ export const generateBeginnerState = () => {
         direction: "bottom-right",
         coords: new HexCoordinate(coords.x - 0.5, coords.y + 0.5, coords.z + 0.5),
         top: (tile: Tile) => {
-          return tile.top + TILE_HEIGHT / 4 * 3 - 1;
+          return tile.top + TILE_HEIGHT / 4 * 3 - 2;
         },
         left: (tile: Tile) => {
           return tile.left + TILE_WIDTH + 1 + (TILE_GAP - VERTEX_WIDTH) / 2;
@@ -81,7 +81,7 @@ export const generateBeginnerState = () => {
         direction: "bottom-left",
         coords: new HexCoordinate(coords.x + 0.5, coords.y - 0.5, coords.z + 0.5),
         top: (tile: Tile) => {
-          return tile.top + TILE_HEIGHT / 4 * 3 - 1;
+          return tile.top + TILE_HEIGHT / 4 * 3 - 2;
         },
         left: (tile: Tile) => {
           return tile.left - VERTEX_WIDTH + 1 - (TILE_GAP - VERTEX_WIDTH) / 2;
@@ -122,65 +122,70 @@ export const generateBeginnerState = () => {
   const generateEdges = (coords: HexCoordinate) => {
     const data = [
       {
-        direction: "top",
-        coords: new HexCoordinate(coords.x + 0.5, coords.y + 0.5, coords.z - 0.5),
+        direction: "top-right",
+        coords: new HexCoordinate(coords.x, coords.y + 0.5, coords.z - 0.5),
         top: (tile: Tile) => {
-          return tile.top - VERTEX_HEIGHT / 2 + TILE_GAP / 2;
+          return tile.top + 5;
         },
         left: (tile: Tile) => {
-          return tile.left + TILE_WIDTH / 2 - VERTEX_WIDTH / 2 + 1; // why do we need + 1 ???
+          return tile.left + TILE_WIDTH / 2 + 8;
         },
         rotation: -60,
       },
       {
-        direction: "top-right",
-        coords: new HexCoordinate(coords.x - 0.5, coords.y + 0.5, coords.z - 0.5),
+        direction: "right",
+        coords: new HexCoordinate(coords.x - 0.5, coords.y + 0.5, coords.z),
         top: (tile: Tile) => {
-          return tile.top - VERTEX_HEIGHT / 1.3 + TILE_HEIGHT / 4;
+          return tile.top + 41;
         },
         left: (tile: Tile) => {
-          return tile.left + TILE_WIDTH + 1;
+          return tile.left + TILE_WIDTH - 1;
         },
+        rotation: 0,
       },
       {
         direction: "bottom-right",
-        coords: new HexCoordinate(coords.x - 0.5, coords.y + 0.5, coords.z + 0.5),
+        coords: new HexCoordinate(coords.x - 0.5, coords.y, coords.z + 0.5),
         top: (tile: Tile) => {
-          return tile.top + TILE_HEIGHT / 4 * 3 - 1;
+          return tile.top + TILE_HEIGHT - 20;
         },
         left: (tile: Tile) => {
-          return tile.left + TILE_WIDTH + 1;
+          return tile.left + TILE_WIDTH - 13;
         },
-      },
-      {
-        direction: "bottom",
-        coords: new HexCoordinate(coords.x - 0.5, coords.y - 0.5, coords.z + 0.5),
-        top: (tile: Tile) => {
-          return tile.top + TILE_HEIGHT;
-        },
-        left: (tile: Tile) => {
-          return tile.left + TILE_WIDTH / 2 - VERTEX_WIDTH / 2 + 1; // why do we need + 1 ???
-        },
+        rotation: 60,
       },
       {
         direction: "bottom-left",
-        coords: new HexCoordinate(coords.x + 0.5, coords.y - 0.5, coords.z + 0.5),
+        coords: new HexCoordinate(coords.x, coords.y - 0.5, coords.z + 0.5),
         top: (tile: Tile) => {
-          return tile.top + TILE_HEIGHT / 4 * 3 - 1;
+          return tile.top + TILE_HEIGHT - 20;
         },
         left: (tile: Tile) => {
-          return tile.left - VERTEX_WIDTH + 1;
+          return tile.left + 6;
         },
+        rotation: -60,
+      },
+      {
+        direction: "left",
+        coords: new HexCoordinate(coords.x + 0.5, coords.y - 0.5, coords.z),
+        top: (tile: Tile) => {
+          return tile.top + 41;
+        },
+        left: (tile: Tile) => {
+          return tile.left - 6;
+        },
+        rotation: 0,
       },
       {
         direction: "top-left",
-        coords: new HexCoordinate(coords.x + 0.5, coords.y - 0.5, coords.z - 0.5),
+        coords: new HexCoordinate(coords.x + 0.5, coords.y, coords.z - 0.5),
         top: (tile: Tile) => {
-          return tile.top - VERTEX_HEIGHT / 1.3 + TILE_HEIGHT / 4;
+          return tile.top + 5;
         },
         left: (tile: Tile) => {
-          return tile.left - VERTEX_WIDTH + 1;
+          return tile.left + 35;
         },
+        rotation: 60,
       },
     ];
 
@@ -196,21 +201,13 @@ export const generateBeginnerState = () => {
 
       const tile = state.tiles[coords.toString()];
 
-      if (d.direction === "top") {
-        state.edges[edgeCoords.toString()] = {
-          coords: edgeCoords,
-          top: top(tile),
-          left: left(tile),
-          rotation: d.rotation,
-        }
-      } else {
-        state.edges[edgeCoords.toString()] = {
-          coords: edgeCoords,
-          top: 0,
-          left: 0,
-          rotation: 0,
-        }
+      state.edges[edgeCoords.toString()] = {
+        coords: edgeCoords,
+        top: top(tile),
+        left: left(tile),
+        rotation: d.rotation,
       }
+
 
     });
   };

@@ -48,7 +48,7 @@
 .edge {
   position: absolute;
   width: 10px;
-  height: 40px;
+  height: 34px;
   background: blue;
   z-index: 5;
 
