@@ -9,5 +9,5 @@ export const BOARD_HEIGHT = 6 * TILE_SIZE;
 export const ROW_OFFSET = 30;
 
 
-export const VERTEX_HEIGHT = 10;
-export const VERTEX_WIDTH = 10;
+export const VERTEX_HEIGHT = 18;
+export const VERTEX_WIDTH = 18;

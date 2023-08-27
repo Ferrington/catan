@@ -1,6 +1,11 @@
 import HexCoordinate from "../game/HexCoordinate.ts";
 
-export type BoardState = {
+export type State = {
+  board: Board;
+  players: Players;
+};
+
+export type Board = {
   tiles: {
     [index: string]: Tile;
   },
@@ -10,7 +15,7 @@ export type BoardState = {
   edges: {
     [index: string]: Edge;
   },
-};
+}
 
 export type Tile = {
   coords: HexCoordinate;
@@ -22,6 +27,12 @@ export type Vertex = {
   coords: HexCoordinate;
   left: number;
   top: number;
+  building: null | Building;
+}
+
+export type Building = {
+  type: "settlement" | "city";
+  color: string;
 }
 
 export type Edge = {
@@ -29,4 +40,5 @@ export type Edge = {
   left: number;
   top: number;
   rotation: number;
+  color: string | null;
 }

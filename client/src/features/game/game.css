@@ -7,7 +7,7 @@
   --m: 1px;
   width: calc(var(--s) * 6 * 1.1547);
   height: calc(var(--s) * 6);
-  background: #a9a9a9;
+  background: #fff4b1;
   font-size: initial;
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   display: flex;
@@ -38,11 +38,13 @@
 
 .vertex {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background: red;
+  width: 18px;
+  height: 18px;
   z-index: 5;
-  border-radius: 10px;
+}
+
+.vertex--city {
+  vertical-align: top;
 }
 
 .edge {
