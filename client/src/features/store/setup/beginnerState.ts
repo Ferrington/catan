@@ -28,12 +28,45 @@ const testPlayers = (): Players => {
   }
 };
 
+
 export const generateBeginnerState = () => {
   const state: State = {
     board: generateBoard(),
     players: testPlayers(),
   };
 
+  addTileInfo(state);
+  addPlayers(state);
+
+  return state;
+}
+
+const addTileInfo = (state: State) => {
+  state.board.tiles[new HexCoordinate(2, 0, -2).toString()].resource = "rock";
+  state.board.tiles[new HexCoordinate(1, 1, -2).toString()].resource = "sheep";
+  state.board.tiles[new HexCoordinate(0, 2, -2).toString()].resource = "wood";
+
+  state.board.tiles[new HexCoordinate(2, -1, -1).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(1, 0, -1).toString()].resource = "brick";
+  state.board.tiles[new HexCoordinate(0, 1, -1).toString()].resource = "sheep";
+  state.board.tiles[new HexCoordinate(-1, 2, -1).toString()].resource = "brick";
+
+  state.board.tiles[new HexCoordinate(2, -2, 0).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(1, -1, 0).toString()].resource = "wood";
+  state.board.tiles[new HexCoordinate(-1, 1, 0).toString()].resource = "wood";
+  state.board.tiles[new HexCoordinate(-2, 2, 0).toString()].resource = "rock";
+
+  state.board.tiles[new HexCoordinate(1, -2, 1).toString()].resource = "wood";
+  state.board.tiles[new HexCoordinate(0, -1, 1).toString()].resource = "rock";
+  state.board.tiles[new HexCoordinate(-1, 0, 1).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(-2, 1, 1).toString()].resource = "sheep";
+
+  state.board.tiles[new HexCoordinate(0, -2, 2).toString()].resource = "brick";
+  state.board.tiles[new HexCoordinate(-1, -1, 2).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(-2, 0, 2).toString()].resource = "sheep";
+};
+
+const addPlayers = (state: State) => {
   // Player 1 - white
   const player1 = Object.values(state.players)[0];
 
@@ -89,6 +122,4 @@ export const generateBeginnerState = () => {
   };
   state.board.edges[new HexCoordinate(1, -1.5, .5).toString()].color = player4.color;
   state.board.edges[new HexCoordinate(1, .5, -1.5).toString()].color = player4.color;
-
-  return state;
 }

@@ -1,6 +1,6 @@
 import {Vertex as VertexType} from "../../types/types.ts";
-import {ReactComponent as CityImg} from "../../../assets/city.svg";
-import {ReactComponent as SettlementImg} from "../../../assets/settlement.svg";
+import {ReactComponent as CityImg} from "../../../assets/buildings/city.svg";
+import {ReactComponent as SettlementImg} from "../../../assets/buildings/settlement.svg";
 
 export default function Vertex({vertex}: { vertex: VertexType }) {
 

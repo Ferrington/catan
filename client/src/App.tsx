@@ -51,6 +51,9 @@ export default function App() {
   // ) : (
   //   <PlayerForm />
   // );
-
+  //Wheat by Callum Taylor
+  // from <a href="https://thenounproject.com/browse/icons/term/wheat/" target="_blank" title="Wheat Icons">Noun
+  // Project</a> (CC BY 3.0)
+  //desert by Andrejs Kirma from <a href="https://thenounproject.com/browse/icons/term/desert/" target="_blank" title="desert Icons">Noun Project</a> (CC BY 3.0)
   return <Board/>
 }

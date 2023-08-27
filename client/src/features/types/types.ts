@@ -21,6 +21,7 @@ export type Tile = {
   coords: HexCoordinate;
   left: number;
   top: number;
+  resource: "brick" | "rock" | "sheep" | "wheat" | "wood" | null;
 };
 
 export type Vertex = {
