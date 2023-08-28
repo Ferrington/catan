@@ -33,6 +33,7 @@ export const generateBoard = () => {
       top: BOARD_HEIGHT / 2 - (((-coords.z) * (TILE_HEIGHT + TILE_GAP)) + TILE_HEIGHT / 2) - coords.z * ROW_OFFSET,
       left: BOARD_WIDTH / 2 - (((coords.x - coords.y) / 2 * (TILE_WIDTH + TILE_GAP)) + TILE_WIDTH / 2),
       resource: null,
+      numberToken: 0,
     }
   };
 

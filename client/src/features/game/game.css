@@ -57,3 +57,23 @@
   transform-origin: top;
   box-shadow: 0 0 2px black;
 }
+
+.number-token {
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.number-token--number {
+  margin-top: 3px;
+}
+
+.number-token--pips {
+  top: 8px;
+  position: absolute;
+}

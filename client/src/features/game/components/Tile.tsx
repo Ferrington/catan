@@ -41,11 +41,25 @@ const resourceVisuals: ResourceVisuals = {
   },
 }
 
+type PipCounts = {
+  [index: number]: number
+}
+
+const pipCounts: PipCounts = {
+  2: 1,
+  12: 1,
+  3: 2,
+  11: 2,
+  4: 3,
+  10: 3,
+  5: 4,
+  9: 4,
+  6: 5,
+  8: 5
+}
+
 export default function Tile({tile}: { tile: TileType }) {
-
   const {coords} = tile;
-
-  console.log(tile.resource);
 
   return (
     <div className="tile" style={{
@@ -54,9 +68,16 @@ export default function Tile({tile}: { tile: TileType }) {
       background: tile.resource == null ? "#fff4b1" : resourceVisuals[tile.resource].color,
     }}>
       <div className="text">
+        {/*<div style={{position: "absolute", top: 10}}>{coords.toString()}</div>*/}
         {tile.resource != null &&
-            <img src={resourceVisuals[tile.resource].img} width={40} height={40} alt="resource icon"/>}
-        <div style={{position: "absolute", top: 20}}>{coords.toString()}</div>
+            <>
+                <img src={resourceVisuals[tile.resource].img} width={40} height={40} alt="resource icon"/>
+                <div className="number-token" style={{color: [6, 8].includes(tile.numberToken) ? "red" : "black"}}>
+                    <div className="number-token--number">{tile.numberToken}</div>
+                    <div className="number-token--pips">{".".repeat(pipCounts[tile.numberToken])}</div>
+                </div>
+            </>
+        }
       </div>
     </div>
   );

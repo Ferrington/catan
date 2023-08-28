@@ -13,7 +13,7 @@ const testPlayers = (): Players => {
     "2": {
       id: "2",
       name: "Sam",
-      color: "Orange",
+      color: "Green",
     },
     "3": {
       id: "3",
@@ -43,27 +43,45 @@ export const generateBeginnerState = () => {
 
 const addTileInfo = (state: State) => {
   state.board.tiles[new HexCoordinate(2, 0, -2).toString()].resource = "rock";
+  state.board.tiles[new HexCoordinate(2, 0, -2).toString()].numberToken = 10;
   state.board.tiles[new HexCoordinate(1, 1, -2).toString()].resource = "sheep";
+  state.board.tiles[new HexCoordinate(1, 1, -2).toString()].numberToken = 2;
   state.board.tiles[new HexCoordinate(0, 2, -2).toString()].resource = "wood";
+  state.board.tiles[new HexCoordinate(0, 2, -2).toString()].numberToken = 9;
 
   state.board.tiles[new HexCoordinate(2, -1, -1).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(2, -1, -1).toString()].numberToken = 12;
   state.board.tiles[new HexCoordinate(1, 0, -1).toString()].resource = "brick";
+  state.board.tiles[new HexCoordinate(1, 0, -1).toString()].numberToken = 6;
   state.board.tiles[new HexCoordinate(0, 1, -1).toString()].resource = "sheep";
+  state.board.tiles[new HexCoordinate(0, 1, -1).toString()].numberToken = 4;
   state.board.tiles[new HexCoordinate(-1, 2, -1).toString()].resource = "brick";
+  state.board.tiles[new HexCoordinate(-1, 2, -1).toString()].numberToken = 10;
 
   state.board.tiles[new HexCoordinate(2, -2, 0).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(2, -2, 0).toString()].numberToken = 9;
   state.board.tiles[new HexCoordinate(1, -1, 0).toString()].resource = "wood";
+  state.board.tiles[new HexCoordinate(1, -1, 0).toString()].numberToken = 11;
   state.board.tiles[new HexCoordinate(-1, 1, 0).toString()].resource = "wood";
+  state.board.tiles[new HexCoordinate(-1, 1, 0).toString()].numberToken = 3;
   state.board.tiles[new HexCoordinate(-2, 2, 0).toString()].resource = "rock";
+  state.board.tiles[new HexCoordinate(-2, 2, 0).toString()].numberToken = 8;
 
   state.board.tiles[new HexCoordinate(1, -2, 1).toString()].resource = "wood";
+  state.board.tiles[new HexCoordinate(1, -2, 1).toString()].numberToken = 8;
   state.board.tiles[new HexCoordinate(0, -1, 1).toString()].resource = "rock";
+  state.board.tiles[new HexCoordinate(0, -1, 1).toString()].numberToken = 3;
   state.board.tiles[new HexCoordinate(-1, 0, 1).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(-1, 0, 1).toString()].numberToken = 4;
   state.board.tiles[new HexCoordinate(-2, 1, 1).toString()].resource = "sheep";
+  state.board.tiles[new HexCoordinate(-2, 1, 1).toString()].numberToken = 5;
 
   state.board.tiles[new HexCoordinate(0, -2, 2).toString()].resource = "brick";
+  state.board.tiles[new HexCoordinate(0, -2, 2).toString()].numberToken = 5;
   state.board.tiles[new HexCoordinate(-1, -1, 2).toString()].resource = "wheat";
+  state.board.tiles[new HexCoordinate(-1, -1, 2).toString()].numberToken = 6;
   state.board.tiles[new HexCoordinate(-2, 0, 2).toString()].resource = "sheep";
+  state.board.tiles[new HexCoordinate(-2, 0, 2).toString()].numberToken = 11;
 };
 
 const addPlayers = (state: State) => {

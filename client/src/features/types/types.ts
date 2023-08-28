@@ -22,6 +22,7 @@ export type Tile = {
   left: number;
   top: number;
   resource: "brick" | "rock" | "sheep" | "wheat" | "wood" | null;
+  numberToken: number;
 };
 
 export type Vertex = {
