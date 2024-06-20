@@ -1,8 +1,9 @@
 export {};
 
 declare global {
-  type GameState = {
+  type ServerGameState = {
     players: VisiblePlayer[];
+    socketAssignments: string[];
     board: CatanBoard;
     turn: number;
     turnPhase: TurnPhase;
@@ -10,11 +11,21 @@ declare global {
     resources: Record<Resource, number>;
   };
 
+  type ClientGameState = {
+    players: Player[];
+    board: CatanBoard;
+    turn: number;
+    turnPhase: TurnPhase;
+    actionLog: Action[];
+  };
+
   type TurnPhase = "Roll" | "Trade" | "Build";
 
   type PlayerColor = "red" | "blue" | "green" | "purple";
 
-  type Players = Record<PlayerColor, Player>;
+  type Dice = [Die, Die];
+
+  type Die = 1 | 2 | 3 | 4 | 5 | 6;
 
   type Player = VisiblePlayer | HiddenPlayer;
 
@@ -53,12 +64,14 @@ declare global {
   type HexTile = {
     isHighlighted: boolean;
     coords: HexPoint;
-    resource: Resource;
+    resource: TileType;
     numberToken: number | null;
     harbors: Partial<Record<VertexDirection, Harbor>>;
   };
 
-  type Resource = "wool" | "brick" | "lumber" | "grain" | "ore" | "desert";
+  type Resource = "wool" | "brick" | "lumber" | "grain" | "ore";
+
+  type TileType = Resource | "desert";
 
   type Road = {
     rotation: number;
@@ -74,13 +87,13 @@ declare global {
   };
 
   type Harbor = {
-    resource: Resource | null;
+    resource: TileType | null;
     ratio: number;
     vertex: VertexDirection;
   };
 
   type TemplateHarbor = {
-    resource: Resource | null;
+    resource: TileType | null;
     ratio: number;
     vertices: VertexDirection[];
   };

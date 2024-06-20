@@ -1,59 +1,30 @@
-import { generateBoard } from "~/utils/board/generateBoard";
+import { drawBoard } from "~/utils/board/drawBoard";
 
 export const useCatanStore = defineStore("catan", () => {
-  const board = ref<CatanBoard>(generateBoard());
+  const canvas = ref<HTMLCanvasElement>();
+  const highlightedObject = ref<HighlightedObject | null>(null);
 
-  const players = ref<Players>({
-    red: {
-      visibleResources: true,
-      name: "Red",
-      color: "red",
-      settlements: 5,
-      cities: 4,
-      roads: 15,
-      victoryPoints: 0,
-      wool: 1,
-      brick: 1,
-      lumber: 2,
-      grain: 1,
-      ore: 1,
-    },
-    blue: {
-      visibleResources: false,
-      name: "Blue",
-      color: "blue",
-      settlements: 5,
-      cities: 4,
-      roads: 15,
-      victoryPoints: 0,
-    },
-    green: {
-      visibleResources: false,
-      name: "Green",
-      color: "green",
-      settlements: 5,
-      cities: 4,
-      roads: 15,
-      victoryPoints: 0,
-    },
-    purple: {
-      visibleResources: false,
-      name: "Purple",
-      color: "purple",
-      settlements: 5,
-      cities: 4,
-      roads: 15,
-      victoryPoints: 0,
-    },
-  });
-  const turnOrder = ref<PlayerColor[]>(["red", "blue", "green", "purple"]);
-  const turn = ref<number>(0);
-  const turnPhase = ref<TurnPhase>("Roll");
-  const activePlayer = computed<Player>(() => {
-    return players.value[turnOrder.value[turn.value]];
+  const dice = ref<Dice>([1, 1]);
+  const gameState = ref<ClientGameState>();
+
+  const players = computed(() => gameState.value?.players || []);
+  const board = computed(() => gameState.value?.board);
+  const activePlayer = computed<Player | undefined>(() =>
+    gameState.value ? players.value?.[gameState.value.turn] : undefined
+  );
+  const turnPhase = computed(() => gameState.value?.turnPhase);
+  const actionLog = computed(() => gameState.value?.actionLog ?? []);
+
+  socket.on("gameState", (_gameState) => {
+    gameState.value = _gameState;
+    drawBoard();
   });
 
-  const actionLog = ref<Action[]>([]);
+  socket.on("roll", (roll) => (dice.value = roll));
+
+  function setCanvas(_canvas: HTMLCanvasElement) {
+    canvas.value = _canvas;
+  }
 
   return {
     players,
@@ -61,5 +32,9 @@ export const useCatanStore = defineStore("catan", () => {
     activePlayer,
     turnPhase,
     actionLog,
+    dice,
+    setCanvas,
+    canvas,
+    highlightedObject,
   };
 });

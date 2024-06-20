@@ -6,33 +6,30 @@ import { drawSettlement } from "~/utils/board/settlements/drawSettlement";
 import { drawHexagon } from "~/utils/board/tiles/drawHexagon";
 import { drawTile } from "~/utils/board/tiles/drawTile";
 
-export function drawBoard(
-  ctx: CanvasRenderingContext2D | null,
-  highlightedObject: HighlightedObject | null
-) {
-  if (!ctx) return;
-  const canvas = ctx.canvas;
+export function drawBoard() {
+  const { board, canvas, highlightedObject } = storeToRefs(useCatanStore());
 
-  const { board } = storeToRefs(useCatanStore());
+  const ctx = canvas.value?.getContext("2d");
+  if (!canvas.value || !ctx || !board.value) return;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
 
-  const boardCenter = calcBoardCenter(canvas);
-  const boardRadius = canvas.width * BOARD_RADIUS_MULT;
+  const boardCenter = calcBoardCenter(canvas.value);
+  const boardRadius = canvas.value.width * BOARD_RADIUS_MULT;
 
   drawHexagon(ctx, boardCenter, boardRadius, "flat", "#87ceeb", "black");
 
   Object.values(board.value.tiles).forEach((tile) => {
-    if (!ctx) return;
+    if (!ctx || !board.value) return;
 
-    drawTile(ctx, highlightedObject, tile, board.value.robberLocation);
+    drawTile(ctx, highlightedObject.value, tile, board.value.robberLocation);
   });
 
   Object.values(board.value.roads).forEach((road) => {
     if (!ctx) return;
 
     if (road.player || DEBUG_MODE) {
-      drawRoad(ctx, road, highlightedObject);
+      drawRoad(ctx, road, highlightedObject.value);
     }
   });
 
@@ -40,9 +37,9 @@ export function drawBoard(
     if (!settlement.player && !DEBUG_MODE) return;
 
     if (settlement.isCity) {
-      drawCity(ctx, settlement, highlightedObject);
+      drawCity(ctx, settlement, highlightedObject.value);
     } else {
-      drawSettlement(ctx, settlement, highlightedObject);
+      drawSettlement(ctx, settlement, highlightedObject.value);
     }
   });
 }

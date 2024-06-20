@@ -1,7 +1,7 @@
+import { RESOURCES } from "~/assets/resources/imports";
 import type { HighlightedObject } from "~/composables/catanBoard";
 import {
   PIP_COUNTS,
-  RESOURCES,
   TILE_IMAGE_SIZE_MULT,
   TILE_RADIUS_MULT,
 } from "~/config/constants";
@@ -26,7 +26,7 @@ export function drawTile(
   const fillStyle = sameCoords(coords, highlightedObject?.coords)
     ? "#90EE90"
     : RESOURCES[resource].color;
-  drawHexagon(c, center, radius, "pointy", fillStyle);
+  drawHexagon(c, center, radius, "pointy", fillStyle, "black");
 
   // Draw resource image
   if (resource !== "desert") {

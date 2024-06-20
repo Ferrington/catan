@@ -19,12 +19,10 @@ export function useCatanBoard(
   canvas: Ref<HTMLCanvasElement | null>,
   boardWrapper: Ref<HTMLDivElement | null>
 ) {
-  let ctx: CanvasRenderingContext2D | null = null;
-
   const mouseCoords = ref<Point | null>(null);
-  const highlightedObject = ref<HighlightedObject | null>(null);
 
-  const { board } = storeToRefs(useCatanStore());
+  const { board, highlightedObject } = storeToRefs(useCatanStore());
+  const { setCanvas } = useCatanStore();
 
   onMounted(() => {
     const context = canvas.value?.getContext("2d");
@@ -33,9 +31,12 @@ export function useCatanBoard(
       return;
     }
 
-    ctx = context;
+    setCanvas(canvas.value);
     calcCanvasSize();
-    drawBoard(ctx, highlightedObject.value);
+
+    if (board.value) {
+      drawBoard();
+    }
 
     window.addEventListener("resize", calcCanvasSize);
   });
@@ -46,7 +47,8 @@ export function useCatanBoard(
 
   function handleMouseMove(e: MouseEvent) {
     mouseCoords.value = getMousePos(e);
-    if (!mouseCoords.value || !canvas.value || !ctx) {
+    const ctx = canvas.value?.getContext("2d");
+    if (!mouseCoords.value || !canvas.value || !ctx || !board.value) {
       return;
     }
 
@@ -125,17 +127,15 @@ export function useCatanBoard(
     };
   }
 
-  watch(highlightedObject, () => drawBoard(ctx, highlightedObject.value), {
+  watch(highlightedObject, () => drawBoard(), {
     deep: true,
   });
 
   function calcCanvasSize() {
-    if (!boardWrapper.value || !canvas.value || !ctx) return;
+    if (!boardWrapper.value || !canvas.value) return;
 
     const rect = boardWrapper.value.getBoundingClientRect();
     const { width, height } = rect;
-
-    console.log(width, height);
 
     let newWidth = width;
     let newHeight = width * 0.86666;
@@ -146,7 +146,7 @@ export function useCatanBoard(
 
     canvas.value.width = newWidth;
     canvas.value.height = newHeight;
-    drawBoard(ctx, highlightedObject.value);
+    drawBoard();
   }
 
   return {

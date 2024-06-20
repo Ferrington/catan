@@ -8,7 +8,11 @@ export function generateBoard() {
   const settlements = generateSettlements(tiles);
   const robberLocation = Object.values(tiles).find(
     (tile) => tile.resource === "desert"
-  )!.coords;
+  )?.coords;
+
+  if (!robberLocation) {
+    throw new Error("No desert tile found");
+  }
 
   return { tiles, roads, settlements, robberLocation };
 }

@@ -7,6 +7,7 @@ const { activePlayer, turnPhase } = storeToRefs(useCatanStore());
 <template>
   <div class="action-banner-wrapper">
     <div
+      v-if="activePlayer"
       class="turn-info"
       :style="{ color: PLAYER_COLORS[activePlayer.color] }"
     >
