@@ -1,6 +1,6 @@
-import { PIECE_SIZE_MULT, PLAYER_COLORS } from "~/config/constants";
 import { hexCoordsToCoords } from "~/utils/hexCoords/hexCoordsToCoords";
 import { sameCoords } from "~/utils/hexCoords/sameCoords";
+import { PIECE_SIZE_MULT, PLAYER_COLORS } from "~~/config/constants";
 
 export function drawCity(
   ctx: CanvasRenderingContext2D | null,

@@ -1,10 +1,10 @@
-import { BOARD_RADIUS_MULT, DEBUG_MODE } from "~/config/constants";
 import { calcBoardCenter } from "~/utils/board/calcBoardCenter";
 import { drawRoad } from "~/utils/board/roads/drawRoad";
 import { drawCity } from "~/utils/board/settlements/drawCity";
 import { drawSettlement } from "~/utils/board/settlements/drawSettlement";
 import { drawHexagon } from "~/utils/board/tiles/drawHexagon";
 import { drawTile } from "~/utils/board/tiles/drawTile";
+import { BOARD_RADIUS_MULT, DEBUG_MODE } from "~~/config/constants";
 
 export function drawBoard() {
   const { board, canvas, highlightedObject } = storeToRefs(useCatanStore());

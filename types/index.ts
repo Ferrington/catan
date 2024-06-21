@@ -23,9 +23,7 @@ declare global {
 
   type PlayerColor = "red" | "blue" | "green" | "purple";
 
-  type Dice = [Die, Die];
-
-  type Die = 1 | 2 | 3 | 4 | 5 | 6;
+  type Dice = [number, number];
 
   type Player = VisiblePlayer | HiddenPlayer;
 

@@ -1,10 +1,10 @@
+import { hexCoordsToCoords } from "~/utils/hexCoords/hexCoordsToCoords";
+import { sameCoords } from "~/utils/hexCoords/sameCoords";
 import {
   PLAYER_COLORS,
   ROAD_LENGTH_MULT,
   ROAD_WIDTH_MULT,
-} from "~/config/constants";
-import { hexCoordsToCoords } from "~/utils/hexCoords/hexCoordsToCoords";
-import { sameCoords } from "~/utils/hexCoords/sameCoords";
+} from "~~/config/constants";
 
 export function drawRoad(
   ctx: CanvasRenderingContext2D | null,

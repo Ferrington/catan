@@ -1,14 +1,14 @@
 import { RESOURCES } from "~/assets/resources/imports";
 import type { HighlightedObject } from "~/composables/catanBoard";
-import {
-  PIP_COUNTS,
-  TILE_IMAGE_SIZE_MULT,
-  TILE_RADIUS_MULT,
-} from "~/config/constants";
 import { drawHexagon } from "~/utils/board/tiles/drawHexagon";
 import { hexVertexCoords } from "~/utils/board/tiles/hexVertexCoords";
 import { hexCoordsToCoords } from "~/utils/hexCoords/hexCoordsToCoords";
 import { sameCoords } from "~/utils/hexCoords/sameCoords";
+import {
+  PIP_COUNTS,
+  TILE_IMAGE_SIZE_MULT,
+  TILE_RADIUS_MULT,
+} from "~~/config/constants";
 
 export function drawTile(
   c: CanvasRenderingContext2D,
@@ -56,11 +56,13 @@ function drawHarbor(
   c: CanvasRenderingContext2D,
   tileCenter: Point,
   tileCoords: HexPoint,
-  harbors: HexTile["harbors"]
+  harborsObj: HexTile["harbors"]
 ) {
-  if (Object.values(harbors).length === 0) return;
+  const harbors = Object.values(harborsObj);
 
-  const harborCoords = Object.values(harbors).map((harbor) => {
+  if (harbors.length < 2 || !harbors[0] || !harbors[1]) return;
+
+  const harborCoords = harbors.map((harbor) => {
     const hexCoords = hexVertexCoords(tileCoords, harbor.vertex);
     const center = hexCoordsToCoords(c, hexCoords);
 
@@ -68,6 +70,8 @@ function drawHarbor(
   });
 
   const lineLength = c.canvas.width * TILE_RADIUS_MULT * 1.5;
+
+  if (!harborCoords[0] || !harborCoords[1]) return;
   const midpoint = findMidpoint(harborCoords[0], harborCoords[1]);
   const angle = findAngle(tileCenter, midpoint);
   const offshorePoint = {
@@ -124,10 +128,10 @@ function drawHarbor(
   c.textAlign = "center";
   const fontSize = c.canvas.width * TILE_RADIUS_MULT * 0.15;
   c.font = `bold ${fontSize}pt Arial`;
-  const ratio = Object.values(harbors)[0].ratio;
+  const ratio = harbors[0].ratio;
   c.fillText(`${ratio}:1`, offshorePoint.x, offshorePoint.y + fontSize);
 
-  const resource = Object.values(harbors)[0].resource;
+  const resource = harbors[0].resource;
   if (resource) {
     const imgSize = c.canvas.width * TILE_IMAGE_SIZE_MULT * 0.75;
     c.drawImage(
@@ -164,11 +168,13 @@ function drawNumberToken(
   c.font = `bold ${tokenCircleRadius / 1.5}pt Arial`;
   c.fillText(number.toString(), center.x, center.y - tokenCircleRadius / 6);
   c.font = `bold ${tokenCircleRadius / 1.8}pt Arial`;
-  c.fillText(
-    ".".repeat(PIP_COUNTS[number]),
-    center.x,
-    center.y + tokenCircleRadius / 4
-  );
+
+  const pips = PIP_COUNTS[number];
+  if (!pips) {
+    throw new Error(`No pip count for number ${number}`);
+  }
+
+  c.fillText(".".repeat(pips), center.x, center.y + tokenCircleRadius / 4);
 }
 
 function drawRobber(

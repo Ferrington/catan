@@ -1,4 +1,4 @@
-import { TILE_INTERSECT_OFFSET } from "~/config/constants";
+import { TILE_INTERSECT_OFFSET } from "~~/config/constants";
 
 export function isMouseInHex(
   radius: number,

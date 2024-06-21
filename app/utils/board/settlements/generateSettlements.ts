@@ -1,7 +1,7 @@
-import { BEGINNER_BOARD } from "~/config/beginnerBoard";
-import { DEBUG_MODE, HEX_VERTICES } from "~/config/constants";
 import { hexVertexCoords } from "~/utils/board/tiles/hexVertexCoords";
 import { coordsToString } from "~/utils/hexCoords/coordsToString";
+import { BEGINNER_BOARD } from "~~/config/beginnerBoard";
+import { DEBUG_MODE, HEX_VERTICES } from "~~/config/constants";
 
 export function generateSettlements(tiles: CatanBoard["tiles"]) {
   const settlements: CatanBoard["settlements"] = {};

@@ -1,4 +1,4 @@
-import { beginnerInitialState } from "~/config/beginnerInitialState";
+import { beginnerInitialState } from "~~/config/beginnerInitialState";
 
 export let gameState: ServerGameState = initializeGame(4);
 
@@ -22,6 +22,7 @@ export function stripGameState(socketId: string): ClientGameState {
   const _gameState = structuredClone(gameState);
 
   const players = _gameState.players.map((player, i): Player => {
+    console.log(_gameState.socketAssignments.indexOf(socketId), i);
     if (_gameState.socketAssignments.indexOf(socketId) === i) {
       return player;
     }

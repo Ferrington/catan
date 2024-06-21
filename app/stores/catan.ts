@@ -12,6 +12,8 @@ export const useCatanStore = defineStore("catan", () => {
   const activePlayer = computed<Player | undefined>(() =>
     gameState.value ? players.value?.[gameState.value.turn] : undefined
   );
+  const me = computed(() => players.value?.find((p) => p.visibleResources));
+  const isMyTurn = computed(() => activePlayer.value?.name === me.value?.name);
   const turnPhase = computed(() => gameState.value?.turnPhase);
   const actionLog = computed(() => gameState.value?.actionLog ?? []);
 
@@ -21,6 +23,10 @@ export const useCatanStore = defineStore("catan", () => {
   });
 
   socket.on("roll", (roll) => (dice.value = roll));
+
+  function rollDice() {
+    socket.emit("roll");
+  }
 
   function setCanvas(_canvas: HTMLCanvasElement) {
     canvas.value = _canvas;
@@ -36,5 +42,8 @@ export const useCatanStore = defineStore("catan", () => {
     setCanvas,
     canvas,
     highlightedObject,
+    rollDice,
+    me,
+    isMyTurn,
   };
 });

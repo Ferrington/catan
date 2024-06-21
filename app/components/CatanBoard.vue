@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DEBUG_MODE } from "~/config/constants";
+import { DEBUG_MODE } from "~~/config/constants";
 
 const canvas = ref<HTMLCanvasElement | null>(null);
 const boardWrapper = ref<HTMLDivElement | null>(null);
@@ -8,6 +8,9 @@ const { mouseCoords, handleMouseMove, highlightedObject } = useCatanBoard(
   canvas,
   boardWrapper
 );
+
+const { rollDice } = useCatanStore();
+const { isMyTurn } = storeToRefs(useCatanStore());
 </script>
 
 <template>
@@ -26,6 +29,11 @@ const { mouseCoords, handleMouseMove, highlightedObject } = useCatanBoard(
         @mousemove="handleMouseMove"
         @mouseleave="mouseCoords = null"
       ></canvas>
+    </div>
+    <div class="dice-roller">
+      <button v-if="isMyTurn" class="roll-dice-button" @click="rollDice">
+        Roll Dice
+      </button>
     </div>
   </div>
 </template>
@@ -56,5 +64,21 @@ const { mouseCoords, handleMouseMove, highlightedObject } = useCatanBoard(
   background: white;
   border-right: 1px solid black;
   border-bottom: 1px solid black;
+}
+
+.dice-roller {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+}
+
+.roll-dice-button {
+  padding: 10px;
+  font-size: 1.5rem;
+  background: yellow;
+  border: 1px solid black;
+  color: red;
+  cursor: pointer;
 }
 </style>

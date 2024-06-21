@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PLAYER_COLORS } from "~/config/constants";
+import { PLAYER_COLORS } from "~~/config/constants";
 
 const { activePlayer, turnPhase } = storeToRefs(useCatanStore());
 </script>
