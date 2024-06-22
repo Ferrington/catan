@@ -1,6 +1,10 @@
 import { drawBoard } from "~/utils/board/drawBoard";
 
 export const useCatanStore = defineStore("catan", () => {
+  const { socket, connect } = useSocketStore();
+  const route = useRoute();
+  connect(Number(route.query.id));
+
   const canvas = ref<HTMLCanvasElement>();
   const highlightedObject = ref<HighlightedObject | null>(null);
 
