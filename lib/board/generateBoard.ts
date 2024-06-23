@@ -1,6 +1,6 @@
-import { generateRoads } from "~/utils/board/roads/generateRoads";
-import { generateSettlements } from "~/utils/board/settlements/generateSettlements";
-import { generateHexTiles } from "~/utils/board/tiles/generateHexTiles";
+import { generateRoads } from "~~/lib/board/roads/generateRoads";
+import { generateSettlements } from "~~/lib/board/settlements/generateSettlements";
+import { generateHexTiles } from "~~/lib/board/tiles/generateHexTiles";
 
 export function generateBoard() {
   const tiles = generateHexTiles();

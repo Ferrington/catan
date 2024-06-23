@@ -1,9 +1,12 @@
-import { generateBoard } from "~/utils/board/generateBoard";
+import { generateBoard } from "~~/lib/board/generateBoard";
 
 export const beginnerInitialState: ServerGameState = {
   board: generateBoard(),
   turn: 0,
-  turnPhase: "Roll",
+  turnPhase: {
+    main: "roll",
+    sub: null,
+  },
   actionLog: [],
   resources: {
     wool: 19,

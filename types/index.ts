@@ -7,7 +7,7 @@ declare global {
     board: CatanBoard;
     turn: number;
     turnPhase: TurnPhase;
-    actionLog: Action[];
+    actionLog: LogEntry[];
     resources: Record<Resource, number>;
   };
 
@@ -16,10 +16,13 @@ declare global {
     board: CatanBoard;
     turn: number;
     turnPhase: TurnPhase;
-    actionLog: Action[];
+    actionLog: LogEntry[];
   };
 
-  type TurnPhase = "Roll" | "Trade" | "Build";
+  type TurnPhase = {
+    main: "roll" | "build";
+    sub: "robber" | null;
+  };
 
   type PlayerColor = "red" | "blue" | "green" | "purple";
 
@@ -46,10 +49,12 @@ declare global {
     ore: number;
   };
 
-  type Action = {
+  type LogEntry = {
+    id: number;
     type: string;
     player: PlayerColor;
     text: string;
+    color: "text" | "background";
   };
 
   type CatanBoard = {

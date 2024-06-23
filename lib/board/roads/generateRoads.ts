@@ -1,6 +1,6 @@
-import { calcRoadCoords } from "~/utils/board/roads/calcRoadCoords";
-import { coordsToString } from "~/utils/hexCoords/coordsToString";
 import { BEGINNER_BOARD } from "~~/config/beginnerBoard";
+import { calcRoadCoords } from "~~/lib/board/roads/calcRoadCoords";
+import { coordsToString } from "~~/lib/hexCoords/coordsToString";
 
 export function generateRoads(tiles: CatanBoard["tiles"]) {
   const roads: CatanBoard["roads"] = {};

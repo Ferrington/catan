@@ -10,7 +10,7 @@ const { mouseCoords, handleMouseMove, highlightedObject } = useCatanBoard(
 );
 
 const { rollDice } = useCatanStore();
-const { isMyTurn } = storeToRefs(useCatanStore());
+const { isMyTurn, turnPhase } = storeToRefs(useCatanStore());
 </script>
 
 <template>
@@ -31,7 +31,11 @@ const { isMyTurn } = storeToRefs(useCatanStore());
       ></canvas>
     </div>
     <div class="dice-roller">
-      <button v-if="isMyTurn" class="roll-dice-button" @click="rollDice">
+      <button
+        v-if="isMyTurn && turnPhase.main === 'roll' && !turnPhase.sub"
+        class="roll-dice-button"
+        @click="rollDice"
+      >
         Roll Dice
       </button>
     </div>

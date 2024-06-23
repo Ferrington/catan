@@ -2,10 +2,10 @@
 
 <template>
   <div class="game-wrapper">
-    <ActionLog />
     <ActionBanner />
-    <PlayerInfo />
+    <ActionLog />
     <CatanBoard />
+    <PlayerInfoPanel />
   </div>
 </template>
 

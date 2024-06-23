@@ -1,4 +1,5 @@
-import { drawBoard } from "~/utils/board/drawBoard";
+import { drawBoard } from "~~/lib/board/drawBoard";
+import { generateBoard } from "~~/lib/board/generateBoard";
 
 export const useCatanStore = defineStore("catan", () => {
   const { socket, connect } = useSocketStore();
@@ -8,25 +9,45 @@ export const useCatanStore = defineStore("catan", () => {
   const canvas = ref<HTMLCanvasElement>();
   const highlightedObject = ref<HighlightedObject | null>(null);
 
-  const dice = ref<Dice>([1, 1]);
-  const gameState = ref<ClientGameState>();
+  const gameState = ref<ClientGameState>({
+    players: [],
+    board: generateBoard(),
+    turn: 0,
+    turnPhase: { main: "roll", sub: null },
+    actionLog: [],
+  });
 
-  const players = computed(() => gameState.value?.players || []);
-  const board = computed(() => gameState.value?.board);
-  const activePlayer = computed<Player | undefined>(() =>
-    gameState.value ? players.value?.[gameState.value.turn] : undefined
+  const players = computed<Player[]>(() => gameState.value.players);
+  const board = computed<CatanBoard>(() => gameState.value.board);
+  const activePlayer = computed<Player | undefined>(
+    () => players.value[gameState.value.turn]
   );
-  const me = computed(() => players.value?.find((p) => p.visibleResources));
+  const me = computed<Player | undefined>(() =>
+    players.value.find((p) => p.visibleResources)
+  );
   const isMyTurn = computed(() => activePlayer.value?.name === me.value?.name);
-  const turnPhase = computed(() => gameState.value?.turnPhase);
-  const actionLog = computed(() => gameState.value?.actionLog ?? []);
+  const turnPhase = computed(() => gameState.value.turnPhase);
+  const actionLog = computed<LogEntry[]>(() =>
+    [...gameState.value.actionLog].reverse()
+  );
 
   socket.on("gameState", (_gameState) => {
     gameState.value = _gameState;
     drawBoard();
   });
 
-  socket.on("roll", (roll) => (dice.value = roll));
+  socket.on("action:new", (action: LogEntry) => {
+    gameState.value.actionLog.push(action);
+  });
+
+  socket.on("action:all", (actions: LogEntry[]) => {
+    gameState.value.actionLog = actions;
+  });
+
+  socket.on("turn:advance", (turn: number, turnPhase: TurnPhase) => {
+    gameState.value.turn = turn;
+    gameState.value.turnPhase = turnPhase;
+  });
 
   function rollDice() {
     socket.emit("roll");
@@ -42,7 +63,6 @@ export const useCatanStore = defineStore("catan", () => {
     activePlayer,
     turnPhase,
     actionLog,
-    dice,
     setCanvas,
     canvas,
     highlightedObject,

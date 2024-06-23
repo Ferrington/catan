@@ -1,14 +1,14 @@
-import { hexVertexCoords } from "~/utils/board/tiles/hexVertexCoords";
-import { coordsToString } from "~/utils/hexCoords/coordsToString";
 import { BEGINNER_BOARD } from "~~/config/beginnerBoard";
 import { DEBUG_MODE, HEX_VERTICES } from "~~/config/constants";
+import { hexVertexCoords } from "~~/lib/board/tiles/hexVertexCoords";
+import { coordsToString } from "~~/lib/hexCoords/coordsToString";
 
 export function generateSettlements(tiles: CatanBoard["tiles"]) {
   const settlements: CatanBoard["settlements"] = {};
 
   Object.values(tiles).forEach((tile) => {
     for (let i = 0; i < 6; i++) {
-      const vertex = HEX_VERTICES[i];
+      const vertex = HEX_VERTICES[i]!;
       const coords = hexVertexCoords(tile.coords, vertex);
 
       const harborInfo = tile.harbors[vertex];

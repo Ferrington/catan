@@ -1,6 +1,6 @@
-import { coordsToString } from "~/utils/hexCoords/coordsToString";
 import { BEGINNER_BOARD } from "~~/config/beginnerBoard";
 import { HARBOR_TEMPLATE } from "~~/config/harbors";
+import { coordsToString } from "~~/lib/hexCoords/coordsToString";
 
 export function generateHexTiles() {
   const rowTileCounts = [3, 4, 5, 4, 3];

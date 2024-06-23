@@ -1,8 +1,11 @@
 import { Server as Engine } from "engine.io";
 import { registerHandlers } from "~~/server/game/registerHandlers";
+import { initializeGame } from "~~/server/game/state";
 import { io } from "~~/server/utils/socket.io";
 
 export default defineNitroPlugin((nitroApp) => {
+  initializeGame(4);
+
   const engine = new Engine();
 
   io.bind(engine);

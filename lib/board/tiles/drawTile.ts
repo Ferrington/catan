@@ -1,14 +1,14 @@
 import { RESOURCES } from "~/assets/resources/imports";
 import type { HighlightedObject } from "~/composables/catanBoard";
-import { drawHexagon } from "~/utils/board/tiles/drawHexagon";
-import { hexVertexCoords } from "~/utils/board/tiles/hexVertexCoords";
-import { hexCoordsToCoords } from "~/utils/hexCoords/hexCoordsToCoords";
-import { sameCoords } from "~/utils/hexCoords/sameCoords";
 import {
   PIP_COUNTS,
   TILE_IMAGE_SIZE_MULT,
   TILE_RADIUS_MULT,
 } from "~~/config/constants";
+import { drawHexagon } from "~~/lib/board/tiles/drawHexagon";
+import { hexVertexCoords } from "~~/lib/board/tiles/hexVertexCoords";
+import { hexCoordsToCoords } from "~~/lib/hexCoords/hexCoordsToCoords";
+import { sameCoords } from "~~/lib/hexCoords/sameCoords";
 
 export function drawTile(
   c: CanvasRenderingContext2D,

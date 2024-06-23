@@ -1,11 +1,11 @@
-import { calcBoardCenter } from "~/utils/board/calcBoardCenter";
-import { findRoadEdge } from "~/utils/board/roads/findRoadEdge";
-import { findSettlementVertex } from "~/utils/board/settlements/findSettlementVertex";
 import {
   HEX_VERTICES,
   TILE_GAP_MULT,
   TILE_RADIUS_MULT,
 } from "~~/config/constants";
+import { calcBoardCenter } from "~~/lib/board/calcBoardCenter";
+import { findRoadEdge } from "~~/lib/board/roads/findRoadEdge";
+import { findSettlementVertex } from "~~/lib/board/settlements/findSettlementVertex";
 
 export function hexCoordsToCoords(
   ctx: CanvasRenderingContext2D | null,

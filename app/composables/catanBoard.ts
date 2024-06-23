@@ -1,13 +1,14 @@
-import { drawBoard } from "~/utils/board/drawBoard";
-import { isMouseInRectangle } from "~/utils/board/roads/isMouseInRectangle";
-import { isMouseInHex } from "~/utils/board/tiles/isMouseInHex";
-import { hexCoordsToCoords } from "~/utils/hexCoords/hexCoordsToCoords";
-import { sameCoords } from "~/utils/hexCoords/sameCoords";
+import { useResizeObserver } from "@vueuse/core";
 import {
   PIECE_SIZE_MULT,
   SETTLEMENT_INTERSECT_OFFSET,
   TILE_RADIUS_MULT,
 } from "~~/config/constants";
+import { drawBoard } from "~~/lib/board/drawBoard";
+import { isMouseInRectangle } from "~~/lib/board/roads/isMouseInRectangle";
+import { isMouseInHex } from "~~/lib/board/tiles/isMouseInHex";
+import { hexCoordsToCoords } from "~~/lib/hexCoords/hexCoordsToCoords";
+import { sameCoords } from "~~/lib/hexCoords/sameCoords";
 
 export type HighlightedObject = {
   type: "tile" | "road" | "settlement";
@@ -25,25 +26,15 @@ export function useCatanBoard(
   const { setCanvas } = useCatanStore();
 
   onMounted(() => {
-    const context = canvas.value?.getContext("2d");
-    if (!canvas.value || !context) {
+    if (!canvas.value) {
       console.error("Could not get canvas element");
       return;
     }
 
     setCanvas(canvas.value);
-    calcCanvasSize();
-
-    if (board.value) {
-      drawBoard();
-    }
-
-    window.addEventListener("resize", calcCanvasSize);
   });
 
-  onUnmounted(() => {
-    window.removeEventListener("resize", calcCanvasSize);
-  });
+  useResizeObserver(boardWrapper, calcCanvasSize);
 
   function handleMouseMove(e: MouseEvent) {
     mouseCoords.value = getMousePos(e);
