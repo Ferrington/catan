@@ -10,19 +10,15 @@ import { isMouseInHex } from "~~/lib/board/tiles/isMouseInHex";
 import { hexCoordsToCoords } from "~~/lib/hexCoords/hexCoordsToCoords";
 import { sameCoords } from "~~/lib/hexCoords/sameCoords";
 
-export type HighlightedObject = {
-  type: "tile" | "road" | "settlement";
-  obj: HexTile | Road | Settlement;
-  coords: HexPoint;
-};
-
 export function useCatanBoard(
   canvas: Ref<HTMLCanvasElement | null>,
   boardWrapper: Ref<HTMLDivElement | null>
 ) {
   const mouseCoords = ref<Point | null>(null);
 
-  const { board, highlightedObject } = storeToRefs(useCatanStore());
+  const { board, highlightedObject, interaction } = storeToRefs(
+    useCatanStore()
+  );
   const { setCanvas } = useCatanStore();
 
   onMounted(() => {
@@ -37,6 +33,9 @@ export function useCatanBoard(
   useResizeObserver(boardWrapper, calcCanvasSize);
 
   function handleMouseMove(e: MouseEvent) {
+    boardWrapper.value?.classList.remove("cursor-pointer");
+    if (interaction.value == null) return;
+
     mouseCoords.value = getMousePos(e);
     const ctx = canvas.value?.getContext("2d");
     if (!mouseCoords.value || !canvas.value || !ctx || !board.value) {
@@ -44,60 +43,70 @@ export function useCatanBoard(
     }
 
     let collisionHappened = false;
-    const tileRadius = canvas.value.width * TILE_RADIUS_MULT;
-    for (const tile of Object.values(board.value.tiles)) {
-      if (
-        isMouseInHex(
-          tileRadius,
-          hexCoordsToCoords(ctx, tile.coords),
-          mouseCoords.value
-        )
-      ) {
-        if (!sameCoords(tile.coords, highlightedObject.value?.coords)) {
-          highlightedObject.value = {
-            type: "tile",
-            obj: tile,
-            coords: tile.coords,
-          };
+
+    if (interaction.value.type === "tile") {
+      const tileRadius = canvas.value.width * TILE_RADIUS_MULT;
+      for (const tile of Object.values(board.value.tiles)) {
+        if (
+          isMouseInHex(
+            tileRadius,
+            hexCoordsToCoords(ctx, tile.coords),
+            mouseCoords.value
+          )
+        ) {
+          if (!sameCoords(tile.coords, highlightedObject.value?.coords)) {
+            highlightedObject.value = {
+              type: "tile",
+              obj: tile,
+              coords: tile.coords,
+            };
+          }
+          collisionHappened = true;
+          boardWrapper.value?.classList.add("cursor-pointer");
+          break;
         }
-        collisionHappened = true;
-        break;
       }
     }
 
-    const PIECE_SIZE = canvas.value.width * PIECE_SIZE_MULT;
-    for (const settlement of Object.values(board.value.settlements)) {
-      const center = hexCoordsToCoords(ctx, settlement.coords);
-      if (
-        Math.hypot(
-          center.x - mouseCoords.value.x,
-          center.y - mouseCoords.value.y
-        ) <=
-        PIECE_SIZE + SETTLEMENT_INTERSECT_OFFSET
-      ) {
-        if (!sameCoords(settlement.coords, highlightedObject.value?.coords)) {
-          highlightedObject.value = {
-            type: "settlement",
-            obj: settlement,
-            coords: settlement.coords,
-          };
+    if (interaction.value.type === "settlement") {
+      const PIECE_SIZE = canvas.value.width * PIECE_SIZE_MULT;
+      for (const settlement of Object.values(board.value.settlements)) {
+        const center = hexCoordsToCoords(ctx, settlement.coords);
+        if (
+          Math.hypot(
+            center.x - mouseCoords.value.x,
+            center.y - mouseCoords.value.y
+          ) <=
+          PIECE_SIZE + SETTLEMENT_INTERSECT_OFFSET
+        ) {
+          if (!sameCoords(settlement.coords, highlightedObject.value?.coords)) {
+            highlightedObject.value = {
+              type: "settlement",
+              obj: settlement,
+              coords: settlement.coords,
+            };
+          }
+          collisionHappened = true;
+          boardWrapper.value?.classList.add("cursor-pointer");
+          break;
         }
-        collisionHappened = true;
-        break;
       }
     }
 
-    for (const road of Object.values(board.value.roads)) {
-      if (isMouseInRectangle(ctx, road, mouseCoords.value)) {
-        if (!sameCoords(road.coords, highlightedObject.value?.coords)) {
-          highlightedObject.value = {
-            type: "road",
-            obj: road,
-            coords: road.coords,
-          };
+    if (interaction.value.type === "road") {
+      for (const road of Object.values(board.value.roads)) {
+        if (isMouseInRectangle(ctx, road, mouseCoords.value)) {
+          if (!sameCoords(road.coords, highlightedObject.value?.coords)) {
+            highlightedObject.value = {
+              type: "road",
+              obj: road,
+              coords: road.coords,
+            };
+          }
+          collisionHappened = true;
+          boardWrapper.value?.classList.add("cursor-pointer");
+          break;
         }
-        collisionHappened = true;
-        break;
       }
     }
 

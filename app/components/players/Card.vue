@@ -15,15 +15,11 @@ const { me } = storeToRefs(useCatanStore());
       :style="{ backgroundColor: PLAYER_COLORS[player.color] }"
     >
       <div>{{ player.name }}</div>
-      <div class="player-indicator" v-if="me?.name === player.name">
-        &#9733;
+      <div>
+        {{ player.victoryPoints }}
       </div>
     </div>
     <div class="info">
-      <div class="two-columns victory-points">
-        <div>VP:</div>
-        <div>{{ player.victoryPoints }}</div>
-      </div>
       <div class="two-columns">
         <div>Roads:</div>
         <div>{{ player.roads }}</div>
@@ -35,6 +31,10 @@ const { me } = storeToRefs(useCatanStore());
       <div class="two-columns">
         <div>Cities:</div>
         <div>{{ player.cities }}</div>
+      </div>
+      <div class="two-columns resources">
+        <div>Resources:</div>
+        <div>{{ player.resourceCount }}</div>
       </div>
     </div>
   </div>
@@ -64,8 +64,8 @@ const { me } = storeToRefs(useCatanStore());
   gap: 3rem;
 }
 
-.victory-points {
-  margin-bottom: 20px;
+.resources {
+  margin-top: 20px;
 }
 
 .player-indicator {

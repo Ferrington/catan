@@ -1,5 +1,4 @@
 import { RESOURCES } from "~/assets/resources/imports";
-import type { HighlightedObject } from "~/composables/catanBoard";
 import {
   PIP_COUNTS,
   TILE_IMAGE_SIZE_MULT,
@@ -12,10 +11,11 @@ import { sameCoords } from "~~/lib/hexCoords/sameCoords";
 
 export function drawTile(
   c: CanvasRenderingContext2D,
-  highlightedObject: HighlightedObject | null,
   { coords, resource, numberToken, harbors }: HexTile,
   robberLocation: HexPoint
 ) {
+  const { highlightedObject, interaction } = storeToRefs(useCatanStore());
+
   const center = hexCoordsToCoords(c, coords);
   const radius = c.canvas.width * TILE_RADIUS_MULT;
 
@@ -23,8 +23,13 @@ export function drawTile(
   drawHarbor(c, center, coords, harbors);
 
   // Draw hexagon
-  const fillStyle = sameCoords(coords, highlightedObject?.coords)
-    ? "#90EE90"
+  const highlightTile =
+    interaction.value != null &&
+    sameCoords(coords, highlightedObject.value?.coords) &&
+    interaction.value.type === "tile" &&
+    interaction.value.highlight === "tile";
+  const fillStyle = highlightTile
+    ? interaction.value.color
     : RESOURCES[resource].color;
   drawHexagon(c, center, radius, "pointy", fillStyle, "black");
 
@@ -40,7 +45,13 @@ export function drawTile(
     );
   }
 
-  if (sameCoords(coords, robberLocation)) {
+  const highlightRobber =
+    interaction.value != null &&
+    sameCoords(coords, highlightedObject.value?.coords) &&
+    interaction.value.type === "tile" &&
+    interaction.value.highlight === "number";
+
+  if (sameCoords(coords, robberLocation) || highlightRobber) {
     drawRobber(c, { x: center.x, y: center.y + radius / 4 }, radius);
   } else {
     drawNumberToken(

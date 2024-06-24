@@ -9,10 +9,20 @@ function setTurnPhase(phase: TurnPhase) {
 function setPlayerTurn(playerColor: PlayerColor) {
   socket.emit("setPlayerTurn", playerColor);
 }
+
+function resetGame() {
+  socket.emit("resetGame");
+}
 </script>
 
 <template>
   <div class="debug-page">
+    <div class="card">
+      <div class="title">Reset Game</div>
+      <div class="flex-column">
+        <button @click="resetGame">Reset Game</button>
+      </div>
+    </div>
     <div class="card">
       <div class="title">Player Turn</div>
       <div class="flex-row">

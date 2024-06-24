@@ -18,6 +18,7 @@ const { actionLog } = storeToRefs(useCatanStore());
 <style scoped>
 .action-log-wrapper {
   border-right: 1px solid black;
+  grid-row: span 2;
   overflow: hidden;
   display: grid;
   grid-template-rows: auto 1fr;

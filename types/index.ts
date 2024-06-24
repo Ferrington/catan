@@ -17,6 +17,7 @@ declare global {
     turn: number;
     turnPhase: TurnPhase;
     actionLog: LogEntry[];
+    resources: Record<Resource, number>;
   };
 
   type TurnPhase = {
@@ -38,6 +39,7 @@ declare global {
     cities: number; // 4 start
     roads: number; // 15 start
     victoryPoints: number;
+    resourceCount: number;
   };
 
   type VisiblePlayer = Omit<HiddenPlayer, "visibleResources"> & {
@@ -119,6 +121,33 @@ declare global {
     x: number;
     y: number;
   };
+
+  type HighlightedObject = {
+    type: "tile" | "road" | "settlement";
+    obj: HexTile | Road | Settlement;
+    coords: HexPoint;
+  };
+
+  type InteractionControls =
+    | ({ color: string } & (
+        | {
+            type: "road";
+            highlight: "road";
+          }
+        | {
+            type: "settlement";
+            highlight: "settlement";
+          }
+        | {
+            type: "tile";
+            highlight: "tile";
+          }
+        | {
+            type: "tile";
+            highlight: "number";
+          }
+      ))
+    | null;
 
   type BeginnerBoard = {
     tiles: Record<string, BeginnerTileInfo>;

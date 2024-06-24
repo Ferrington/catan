@@ -5,6 +5,7 @@
     <ActionBanner />
     <ActionLog />
     <CatanBoard />
+    <PlayersInfoPanel />
     <PlayerInfoPanel />
   </div>
 </template>

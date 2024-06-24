@@ -3,6 +3,7 @@ import { onDisconnect } from "~~/server/game/handlers/disconnect";
 import { onRoll } from "~~/server/game/handlers/roll";
 import {
   broadcastGameState,
+  resetGame,
   setPlayerTurn,
   setSocketAssignment,
   setTurnPhase,
@@ -16,6 +17,7 @@ export async function registerHandlers(
     // debug
     console.log("a debug tool connected", socket.id);
 
+    socket.on("resetGame", resetGame);
     socket.on("setPlayerTurn", setPlayerTurn);
     socket.on("setTurnPhase", setTurnPhase);
 

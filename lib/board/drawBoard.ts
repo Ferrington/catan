@@ -22,14 +22,14 @@ export function drawBoard() {
   Object.values(board.value.tiles).forEach((tile) => {
     if (!ctx || !board.value) return;
 
-    drawTile(ctx, highlightedObject.value, tile, board.value.robberLocation);
+    drawTile(ctx, tile, board.value.robberLocation);
   });
 
   Object.values(board.value.roads).forEach((road) => {
     if (!ctx) return;
 
     if (road.player || DEBUG_MODE) {
-      drawRoad(ctx, road, highlightedObject.value);
+      drawRoad(ctx, road);
     }
   });
 
@@ -37,9 +37,9 @@ export function drawBoard() {
     if (!settlement.player && !DEBUG_MODE) return;
 
     if (settlement.isCity) {
-      drawCity(ctx, settlement, highlightedObject.value);
+      drawCity(ctx, settlement);
     } else {
-      drawSettlement(ctx, settlement, highlightedObject.value);
+      drawSettlement(ctx, settlement);
     }
   });
 }

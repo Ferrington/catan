@@ -4,10 +4,11 @@ import { sameCoords } from "~~/lib/hexCoords/sameCoords";
 
 export function drawCity(
   ctx: CanvasRenderingContext2D | null,
-  { coords, player }: Settlement,
-  highlightedObject: HighlightedObject | null
+  { coords, player }: Settlement
 ) {
   if (!ctx) return;
+
+  const { highlightedObject, interaction } = storeToRefs(useCatanStore());
 
   const center = hexCoordsToCoords(ctx, coords);
 
@@ -34,8 +35,13 @@ export function drawCity(
   p.x -= 0.95 * 4 * pieceSize;
   ctx.lineTo(p.x, p.y);
 
-  ctx.fillStyle = sameCoords(coords, highlightedObject?.coords)
-    ? "#90EE90"
+  const highlightSettlement =
+    interaction.value != null &&
+    sameCoords(coords, highlightedObject.value?.coords) &&
+    interaction.value.type === "settlement" &&
+    interaction.value.highlight === "settlement";
+  ctx.fillStyle = highlightSettlement
+    ? interaction.value.color
     : PLAYER_COLORS[player ?? "red"];
   ctx.fill();
   ctx.closePath();

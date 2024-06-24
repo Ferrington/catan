@@ -2,6 +2,7 @@ import { getTileSettlements } from "~~/lib/board/tiles/getTileSettlements";
 import {
   addActionLogEntry,
   advanceTurn,
+  broadcastResources,
   gameState,
   getPlayerBySocketId,
   setTurnPhase,
@@ -25,10 +26,11 @@ function rollDice(socketId: string) {
     Math.floor(Math.random() * 6) + 1,
     Math.floor(Math.random() * 6) + 1,
   ];
-  const rollSum = roll[0] + roll[1];
+  // const rollSum = roll[0] + roll[1];
+  let rollSum = 7;
 
   const player = getPlayerBySocketId(socketId);
-  let text = `${player.name} rolled [${roll[0]}, ${roll[1]}]`;
+  let text = `${player.name} rolled ${rollSum}`;
   if (rollSum === 7) text += " - Robber!";
   addActionLogEntry({
     id: gameState.actionLog.length + 1,
@@ -38,7 +40,7 @@ function rollDice(socketId: string) {
     color: "background",
   });
 
-  return roll[0] + roll[1];
+  return rollSum;
 }
 
 function distributeResources(rollSum: number) {
@@ -127,5 +129,6 @@ function distributeResources(rollSum: number) {
     }
   }
 
+  broadcastResources();
   advanceTurn();
 }

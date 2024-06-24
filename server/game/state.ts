@@ -1,6 +1,10 @@
 import { Socket } from "socket.io";
 import { beginnerInitialState } from "~~/config/beginnerInitialState";
-import { ClientToServerEvents, ServerToClientEvents } from "~~/types/socket";
+import {
+  ClientToServerEvents,
+  PlayerResources,
+  ServerToClientEvents,
+} from "~~/types/socket";
 
 export let gameState: ServerGameState;
 
@@ -63,6 +67,52 @@ export function initializeGame(numPlayers: 3 | 4) {
   gameState = _gameState;
 }
 
+export function resetGame() {
+  const socketAssignments = gameState.socketAssignments;
+  initializeGame(4);
+  gameState.socketAssignments = socketAssignments;
+  broadcastGameState();
+}
+
+export function broadcastResources() {
+  gameState.socketAssignments.forEach((socketId) => {
+    const player = getPlayerBySocketId(socketId);
+
+    const playerResources: PlayerResources = gameState.players.map(
+      (_player) => {
+        const resourceCount =
+          _player.wool +
+          _player.brick +
+          _player.lumber +
+          _player.grain +
+          _player.ore;
+
+        if (player.color === _player.color) {
+          return {
+            playerColor: _player.color,
+            resources: {
+              wool: _player.wool,
+              brick: _player.brick,
+              lumber: _player.lumber,
+              grain: _player.grain,
+              ore: _player.ore,
+            },
+            resourceCount,
+          };
+        } else {
+          return {
+            playerColor: _player.color,
+            resourceCount,
+          };
+        }
+      }
+    );
+
+    const socket = io.sockets.sockets.get(socketId);
+    socket?.emit("resources:update", gameState.resources, playerResources);
+  });
+}
+
 export function broadcastGameState(
   socket?: Socket<ClientToServerEvents, ServerToClientEvents>
 ) {
@@ -70,25 +120,11 @@ export function broadcastGameState(
 
   if (socket == null) {
     gameState.socketAssignments.forEach((socketId) => {
-      broadcast("gameState", [stripGameState(gameState, socketId)], socket);
+      const socket = io.sockets.sockets.get(socketId);
+      socket?.emit("gameState", stripGameState(gameState, socketId));
     });
   } else {
-    broadcast("gameState", [stripGameState(gameState, socket?.id)], socket);
-  }
-}
-
-type EventName = keyof ServerToClientEvents;
-export function broadcast(
-  event: EventName,
-  data: Parameters<ServerToClientEvents[EventName]>,
-  socket?: Socket<ClientToServerEvents, ServerToClientEvents>
-) {
-  if (gameState == null) throw new Error("Game state not initialized");
-
-  if (socket == null) {
-    io.emit(event, ...data);
-  } else {
-    socket.emit(event, ...data);
+    socket.emit("gameState", stripGameState(gameState, socket.id));
   }
 }
 
@@ -103,6 +139,9 @@ function stripGameState(
       return player;
     }
 
+    const resourceCount =
+      player.wool + player.brick + player.lumber + player.grain + player.ore;
+
     return {
       visibleResources: false,
       name: player.name,
@@ -111,6 +150,7 @@ function stripGameState(
       cities: player.cities,
       roads: player.roads,
       victoryPoints: player.victoryPoints,
+      resourceCount,
     };
   });
 
@@ -120,5 +160,6 @@ function stripGameState(
     turn: _gameState.turn,
     turnPhase: _gameState.turnPhase,
     actionLog: _gameState.actionLog,
+    resources: _gameState.resources,
   };
 }
